@@ -28,7 +28,7 @@ function Passenger (person, seat) {
     if (seat instanceof Seat) {
     this.seat = seat; }
     this.getData = function () {
-        return seat.gatData() + ", " + person.getData(); 
+        return seat.getData() + ", " + person.getData(); 
     }
 }
 
@@ -59,7 +59,7 @@ function Flight (relation, date, listOfPassenger = []) {
             // obrati paznju
             str = str + "\t \t" + this.listOfPassenger[i].getData() + "\n" ;
         }
-        return currentDate + `, ${this.relation} \n ${str} `;
+        return `${this.date}, ${this.relation} \n ${str} `;
     }
 }
 
@@ -73,7 +73,14 @@ function Airport (){
         }
     }
     this.getData = function() {
-        return `Airport: ${this.name},  \n ${flight.getData}` //total passengers: ${}
+        var flightsData = "";
+        var passengersCount = 0;
+        for (var i = 0; i < this.listOfFlights.length; i++) {
+            flightsData += this.listOfFlights[i].getData() + "\n" ;
+            passengersCount += this.listOfFlights[i].listOfPassenger.length;
+        }
+
+        return `Airport: ${this.name}, total passengers: ${passengersCount} \n ${flightsData}`;
     }
 }
 
@@ -91,8 +98,10 @@ function createPassenger (firstName, lastName,  seatNumber, category) {
     return new Passenger (person,  seat);
 }
 
+var aerodrom = new Airport();
+
 var flight1 = createFlight("Belgrade - New York", "Oct 25 2017");
 flight1.addPassenger(createPassenger("John", "Snow", 1, "b"));
 
-Airport.addFlight(flight1);
-console.log(airport.getData());
+aerodrom.addFlight(flight1);
+console.log(aerodrom.getData());
